@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <iomanip> // Tambahkan untuk setw()
+
 using namespace std;
 
 struct Mobil {
@@ -49,7 +51,6 @@ void tambahMobil() {
     system("pause");
 }
 
-#include <iomanip> // Tambahkan untuk setw()
 
 void tampilMobil(bool tampilSemua = true, bool status = false) {
     headerMenu();
@@ -77,5 +78,26 @@ void tampilMobil(bool tampilSemua = true, bool status = false) {
     }
     if (!ada) cout << "Tidak ada data mobil.\n";
     garis();
+    system("pause");
+}
+
+void updateStatusMobil() {
+    headerMenu();
+    cout << "Tandai Mobil Disewa/Dikembalikan\n";
+    garis();
+    tampilMobil();
+    cout << "Masukkan ID mobil: ";
+    int id; cin >> id;
+    Mobil* temp = head;
+    while (temp && temp->id != id) temp = temp->next;
+    if (!temp) {
+        cout << "Mobil tidak ditemukan!\n";
+    } else {
+        cout << "Status saat ini: " << (temp->disewa ? "Disewa" : "Tersedia") << endl;
+        cout << "Ubah status menjadi (1: Disewa, 0: Tersedia): ";
+        int st; cin >> st;
+        temp->disewa = (st == 1);
+        cout << "Status berhasil diubah!\n";
+    }
     system("pause");
 }
