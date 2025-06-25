@@ -1,7 +1,6 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
-#include <iomanip> // Tambahkan untuk setw()
-
 using namespace std;
 
 struct Mobil {
@@ -16,18 +15,21 @@ struct Mobil {
 Mobil* head = nullptr;
 int idCounter = 1;
 
+// Membuat garis pemisah
 void garis(int n = 50) {
     for (int i = 0; i < n; ++i) cout << "=";
     cout << endl;
 }
 
+// Header Menu
 void headerMenu() {
-    system("cls");  // Khusus Windows, bersihkan layar
+    system("cls");  // Bersihkan layar (khusus Windows)
     garis();
-    cout << "INVENTARIS SEWA MOBIL" << endl;
+    cout << setw(30) << "INVENTARIS SEWA MOBIL" << endl;
     garis();
 }
 
+// Tambah Data Mobil
 void tambahMobil() {
     headerMenu();
     cout << "Tambah Data Mobil\n";
@@ -51,7 +53,7 @@ void tambahMobil() {
     system("pause");
 }
 
-
+// Tampil Data Mobil
 void tampilMobil(bool tampilSemua = true, bool status = false) {
     headerMenu();
     if (tampilSemua)
@@ -81,27 +83,43 @@ void tampilMobil(bool tampilSemua = true, bool status = false) {
     system("pause");
 }
 
+// Ubah Status Mobil (Disewa/Dikembalikan) dengan Validasi
 void updateStatusMobil() {
     headerMenu();
-    cout << "Tandai Mobil Disewa/Dikembalikan\n";
+    cout << "Pilih Mobil Yang Akan Disewa / Kembalikan Mobil Yang Telah Disewa\n";
     garis();
     tampilMobil();
     cout << "Masukkan ID mobil: ";
-    int id; cin >> id;
+    int id;
+    cin >> id;
+
     Mobil* temp = head;
-    while (temp && temp->id != id) temp = temp->next;
+    while (temp && temp->id != id)
+        temp = temp->next;
+
     if (!temp) {
         cout << "Mobil tidak ditemukan!\n";
     } else {
         cout << "Status saat ini: " << (temp->disewa ? "Disewa" : "Tersedia") << endl;
-        cout << "Ubah status menjadi (1: Disewa, 0: Tersedia): ";
-        int st; cin >> st;
-        temp->disewa = (st == 1);
-        cout << "Status berhasil diubah!\n";
+
+        int st;
+        while (true) {
+            cout << "Ubah status menjadi (1: Disewa, 0: Dikembalikan): ";
+            cin >> st;
+
+            if (st == 0 || st == 1) {
+                temp->disewa = (st == 1);
+                cout << "Status berhasil diubah menjadi: " << (st == 1 ? "Disewa" : "Tersedia") << endl;
+                break;
+            } else {
+                cout << "Input tidak valid. Masukkan hanya angka 1 (Disewa) atau 0 (Dikembalikan).\n";
+            }
+        }
     }
     system("pause");
 }
 
+// Hapus Mobil
 void hapusMobil() {
     headerMenu();
     cout << "Hapus Data Mobil\n";
@@ -126,6 +144,7 @@ void hapusMobil() {
     system("pause");
 }
 
+// Cari Mobil Berdasarkan Merk
 void cariMobil() {
     headerMenu();
     cout << "Cari Mobil Berdasarkan Merk\n";
@@ -155,13 +174,14 @@ void cariMobil() {
     system("pause");
 }
 
+// Main Program
 int main() {
     int pilihan;
     do {
         headerMenu();
         cout << "Menu:\n";
         cout << "1. Tambah Data Mobil\n";
-        cout << "2. Tandai Mobil Disewa/Dikembalikan\n";
+        cout << "2. Pilih Mobil Yang Akan Disewa / Kembalikan Mobil Yang Telah Disewa\n";
         cout << "3. Hapus Mobil dari Daftar\n";
         cout << "4. Cari Mobil Berdasarkan Merk\n";
         cout << "5. Tampilkan Semua Mobil\n";
